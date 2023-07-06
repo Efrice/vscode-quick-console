@@ -34,17 +34,17 @@ With Selection
 
 ```json
 "vim.visualModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<leader>", "c", "l"],
-      "commands": ["quickConsole.createConsoleLog"]
-    }
-  ],
-  "vim.normalModeKeyBindingsNonRecursive": [
-    {
-      "before": ["<leader>", "c", "l"],
-      "commands": ["quickConsole.createConsoleLog"]
-    }
-  ]
+  {
+    "before": ["<leader>", "c", "l"],
+    "commands": ["quickConsole.createConsoleLog"]
+  }
+],
+"vim.normalModeKeyBindingsNonRecursive": [
+  {
+    "before": ["<leader>", "c", "l"],
+    "commands": ["quickConsole.createConsoleLog"]
+  }
+]
 ```
 
 ✨ Happy hacking!
