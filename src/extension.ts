@@ -22,5 +22,3 @@ export function activate(context: vs.ExtensionContext) {
 
 	context.subscriptions.push(disposable)
 }
-
-

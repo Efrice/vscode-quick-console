@@ -1,36 +1,42 @@
-# VS Code Quick Console
+<p align="center">
+  <img src="./public/icon.png" height="150">
+</p>
 
+<h1 align="center">
+Quick Console
+</h1>
+
+<p align="center">
 Quick generate console.log for variables with selection or not anywhere.
-
+</p>
 
 ## Features
 
-||||
-|--|--|--|
+| origin || generate |
+|:---:|:---:|:---:|
 | ![](./public/origin.png) | => | ![](./public/generate.png) |
 
 - 🧂  It's can be use anywhere.
 - 🍭 Single variable without selection.
 - 🌭 Multiple params of function with selection.
+- 🌭 Multiple continuous variables like deconstruct assignment with selection.
 
 ## Usage
-
-### Normal
 
 Without Selection 
   - Move the cursor near variable.
   - Press `Cmd + Shift + L` (Mac) or `Ctrl + Shift + L` (Windows).
-  - Next line will be: 
+  - Next line will be:<br /> 
     console.log('variable:', variable)
 
 With Selection 
-  - Selected the params of function. 
+  - Selected continuous variables or params of function.
   - Press `Cmd + Shift + L` (Mac) or `Ctrl + Shift + L` (Windows).
-  - Next line will be: 
-      console.log('variable1:', variable1)
-      console.log('variable2:', variable2)
+  - Next line will be: <br />
+    console.log('variable1:', variable1)<br />
+    console.log('variable2:', variable2)
 
-### Vim keyBindings Setting
+## Vim keyBindings Setting
 
 ```json
 "vim.visualModeKeyBindingsNonRecursive": [
@@ -46,7 +52,6 @@ With Selection
   }
 ]
 ```
-
 ✨ Happy hacking!
 
 ## License

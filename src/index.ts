@@ -21,17 +21,17 @@ export function getLogInfo(editor: vs.TextEditor): LogInfo {
 
 function generateLogs(selectedText: string, lineText: string, character: number): string {
 	const isFn = isFunction(lineText)
-	const words = getWordFromSelected(selectedText) || getWord(lineText, character)
+	const words = getWordFromSelected(selectedText, isFn) || getWord(lineText, character)
 	if(typeof words === 'string' && words.trim() === ''){
 		return ''
 	}
 	let logs = '$1'
 	if(typeof words === 'string'){
-		logs += generateLog(words, getStartSpaceNumber(lineText), isFn)
+		logs += generateLog(words, getStartSpace(lineText, isFn))
 	}else {
-		const spaceNumber = getStartSpaceNumber(lineText)
+		const space = getStartSpace(lineText, isFn)
 		for(let i = 0; i < words.length; i++){
-			logs += generateLog(words[i], spaceNumber, isFn)
+			logs += generateLog(words[i], space)
 		}
 	}
   return logs
@@ -54,7 +54,7 @@ function isFunction(lineText: string): boolean {
 	return false
 }
 
-function getWordFromSelected(selectedText: string): string | string[] {
+function getWordFromSelected(selectedText: string, isFn: boolean = false): string | string[] {
 	if (!selectedText.includes(',')) {
 		return selectedText
 	} else if (!selectedText.includes(':')) {
@@ -63,7 +63,8 @@ function getWordFromSelected(selectedText: string): string | string[] {
 		const selectedTextArray = selectedText.split(',')
 		const args = []
 		for (let i = 0; i < selectedTextArray.length; i++) {
-			const arg: string = selectedTextArray[i].split(':')[0].trim()
+			const [ a, b ] = selectedTextArray[i].split(':')
+			const arg = isFn ? a.trim() : b.trim()
 			args.push(arg)
 		}
 		return args
@@ -93,21 +94,24 @@ function getWord(lineText: string, character: number): string {
 	return targetStr
 }
 
-function generateLog(log: string, spaceNumber: number, isFn: boolean): string {
-	const space = ' '.repeat(spaceNumber) + (isFn ? '\t' : '')
+function generateLog(log: string, space: string): string {
 	return `${space}console.log('${log}:', ${log})\n`
 }
 
-function getStartSpaceNumber(lineText: string): number {
-	let spaceNumber = 0
+function getStartSpace(lineText: string, isFn: boolean = false): string {
+	let spaceNumber = 0, tabNumber = 0
 	for (let i = 0; i < lineText.length; i++) {
 		if (lineText[i] === ' ') {
 			spaceNumber++
+		} else if (lineText[i] === '\t') {
+			tabNumber++
 		} else {
 			break
 		}
 	}
-	return spaceNumber
+
+	tabNumber += isFn ? 1 : 0
+	return ' '.repeat(spaceNumber) + '\t'.repeat(tabNumber)
 }
 
 function getLineOfOpenBrace(line: number, document: vs.TextDocument): number {
