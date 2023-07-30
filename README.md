@@ -20,6 +20,7 @@ Quick generate console.log for variables with selection or not anywhere.
 - 🍭 Single variable without selection.
 - 🌭 Multiple params of function with selection.
 - 🌭 Multiple continuous variables like deconstruct assignment with selection.
+- 🍖 Clear console.logs in the active file.
 
 ## Usage
 
@@ -36,19 +37,33 @@ With Selection
     console.log('variable1:', variable1)<br />
     console.log('variable2:', variable2)
 
+Clear console.logs
+  - Press `Cmd + Shift + K` (Mac) or `Ctrl + Shift + K` (Windows).
+
 ## Vim keyBindings Setting
 
 ```json
 "vim.visualModeKeyBindingsNonRecursive": [
   {
-    "before": ["<leader>", "c", "l"],
-    "commands": ["quickConsole.createConsoleLog"]
+    "before": ["<leader>", "l"],
+    "commands": [
+      "quickConsole.createConsoleLog",
+      "extension.vim_ctrl+["
+    ]
+  },
+  {
+    "before": ["<leader>", "k"],
+    "commands": ["quickConsole.clearConsoleLog"]
   }
 ],
 "vim.normalModeKeyBindingsNonRecursive": [
   {
-    "before": ["<leader>", "c", "l"],
+    "before": ["<leader>", "l"],
     "commands": ["quickConsole.createConsoleLog"]
+  },
+  {
+    "before": ["<leader>", "k"],
+    "commands": ["quickConsole.clearConsoleLog"]
   }
 ]
 ```
