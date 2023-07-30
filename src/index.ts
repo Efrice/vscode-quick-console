@@ -22,6 +22,37 @@ export function getLogInfo(editor: vs.TextEditor): LogInfo{
   }
 }
 
+export function moveCursor(cursorPosition: { line: number; character: number }, editor: vs.TextEditor) {
+  const { line, character } = cursorPosition
+  editor.selection = new vs.Selection(
+    new vs.Position(line, character),
+    new vs.Position(line, character)
+  )
+  return editor.selection
+}
+
+export function getLogsLines(editor: vs.TextEditor): number[][] {
+  const document = editor.document
+  const totalLines = document.lineCount
+  const logsLines: number[][] = []
+  let cell: number[] = []
+  for (let i = 0; i < totalLines; i++) {
+    if (document.lineAt(i).text.trim().startsWith('console.log(')) {
+      if (cell.length > 0 && i === cell[cell.length - 1] + 1) {
+        cell.push(i)
+      } else {
+        cell.length > 0 && logsLines.push(cell)
+        cell = []
+        cell.push(i)
+      }
+    }
+  }
+  if (cell.length > 0) {
+    logsLines.push(cell)
+  }
+  return logsLines
+}
+
 function getLogsAndCursor(editor: vs.TextEditor){
   const { line, character } = editor.selection.active
   const selectedText = editor.document.getText(editor.selection)
