@@ -15,6 +15,10 @@ export function getLogInfo(editor: vs.TextEditor): LogInfo{
   const { logs, cursorPosition } = getLogsAndCursor(editor)
   const insertLine = getInsertLine(line, editor.document)
 
+  if(isObject(editor.document.lineAt(line).text)){
+    cursorPosition.line = insertLine
+  }
+
   return {
     logs,
     insertLine,
@@ -54,11 +58,11 @@ export function getLogsLines(editor: vs.TextEditor): number[][] {
 }
 
 function getLogsAndCursor(editor: vs.TextEditor){
+  const document = editor.document
   const { line, character } = editor.selection.active
-  const selectedText = editor.document.getText(editor.selection)
-  const lineText = editor.document.lineAt(line).text
-  const isFn = isFunction(lineText)
-  const words = getWordFromSelected(selectedText, isFn) || getWord(lineText, character)
+  const selectedText = document.getText(editor.selection)
+  const lineText = document.lineAt(line).text
+  const words = getWordFromSelected(selectedText, isFunction(lineText)) || getWord(lineText, character)
   let logs = ''
   const cursorPosition = {
     line: 0,
@@ -73,12 +77,13 @@ function getLogsAndCursor(editor: vs.TextEditor){
   }
   
   if(typeof words === 'string'){
-    logs += generateLog(words, getStartSpace(lineText, isFn))
+    const text = isObject(lineText) ? getTextByLine(getLineOfObjcetOpenBrace(line, document), document) : lineText
+    logs += generateLog(words, getStartSpace(text))
 
     cursorPosition.line = line + 1
     cursorPosition.character = logs.length - 1
   }else {
-    const space = getStartSpace(lineText, isFn)
+    const space = getStartSpace(lineText)
     for(let i = 0; i < words.length - 1; i++){
       logs += generateLog(words[i], space)
     }
@@ -96,10 +101,12 @@ function getLogsAndCursor(editor: vs.TextEditor){
 }
 
 function getInsertLine(line: number, document: vs.TextDocument): number{
-  const isFn = isFunction(document.lineAt(line).text)
+  const lineText = getTextByLine(line, document)
   let insertLine = line
-  if(isFn){
-    insertLine = getLineOfOpenBrace(line, document)
+  if(isFunction(lineText)){
+    insertLine = getLineOfFunctionOpenBrace(line, document)
+  }else if(isObject(lineText)){
+    insertLine = getLineOfObjectCloseBrace(line, document)
   }
 
   return insertLine + 1
@@ -107,6 +114,14 @@ function getInsertLine(line: number, document: vs.TextDocument): number{
 
 function isFunction(lineText: string): boolean {
   return lineText.includes('function') || lineText.includes('=>')
+}
+
+function isObject(lineText: string): boolean {
+  return lineText.replace(/\s/g, '').includes('={') || (!isVariable(lineText) && lineText.includes(':'))
+}
+
+function isVariable(lineText: string): boolean {
+  return lineText.includes('var') || lineText.includes('let') || lineText.includes('const')
 }
 
 function getWordFromSelected(selectedText: string, isFn: boolean = false): string | string[] {
@@ -153,7 +168,7 @@ function generateLog(log: string, space: string): string {
   return`${space}console.log('${log}:', ${log})\n`
 }
 
-function getStartSpace(lineText: string, isFn: boolean = false): string {
+function getStartSpace(lineText: string): string {
   let spaceNumber = 0, tabNumber = 0
   for (let i = 0; i < lineText.length; i++) {
     if (lineText[i] === ' ') {
@@ -165,16 +180,56 @@ function getStartSpace(lineText: string, isFn: boolean = false): string {
     }
   }
 
-  tabNumber += isFn ? 1 : 0
+  tabNumber += isFunction(lineText) ? 1 : 0
   return ' '.repeat(spaceNumber) + '\t'.repeat(tabNumber)
 }
 
-function getLineOfOpenBrace(line: number, document: vs.TextDocument): number {
+function getLineOfFunctionOpenBrace(line: number, document: vs.TextDocument): number {
   let position = line
-  let lineText = document.lineAt(position).text
+  let lineText = getTextByLine(position, document)
   while (!lineText.includes('{')) {
     position++
-    lineText = document.lineAt(position).text
+    lineText = getTextByLine(position, document)
   }
   return position
+}
+
+
+let objectOpenBraceStack: number[] = []
+function getLineOfObjcetOpenBrace(line: number, document: vs.TextDocument): number {
+  let position = line
+  let lineText = getTextByLine(position, document).replace(/\s/g, '')
+  while (!lineText.includes('={')) {
+    if(lineText.includes('{')){
+      objectOpenBraceStack.push(position)
+    }
+    position--
+    lineText = getTextByLine(position, document).replace(/\s/g, '')
+  }
+  objectOpenBraceStack.push(position)
+  return position
+}
+
+function getLineOfObjectCloseBrace(line: number, document: vs.TextDocument): number {
+  let position = line
+  let lineText = getTextByLine(position, document)
+
+  if(lineText.includes('}')){
+    objectOpenBraceStack.pop()
+  }
+  while (objectOpenBraceStack.length > 0) {
+    position++
+    lineText = getTextByLine(position, document)
+    if(lineText.includes('{')){
+      objectOpenBraceStack.push(line)
+    }
+    if(lineText.includes('}')){
+      objectOpenBraceStack.pop()
+    }
+  }
+  return position
+}
+
+function getTextByLine(line: number, document: vs.TextDocument): string {
+  return document.lineAt(line).text
 }
