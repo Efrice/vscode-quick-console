@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.4
+
+- Fix object scope detection.
+
 ## 0.0.3
 
 - Clear console.logs in the active file.
