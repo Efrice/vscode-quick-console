@@ -1,16 +1,16 @@
-import { LogInfo } from '../create'
+import { LogInfo } from "../create"
 
-export function createLogInfo(): LogInfo & { push: (log: string) => void }{
+export function createLogInfo(): LogInfo & { push: (log: string) => void } {
   const logInfo = {
-    logs: '',
+    logs: "",
     insertLine: 0,
     cursorPosition: {
       line: 0,
-      character: 0
+      character: 1,
     },
-    push(log: string){
+    push(log: string) {
       logInfo.logs += log
-    }
+    },
   }
   return logInfo
 }

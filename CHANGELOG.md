@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.5
+
+- Fix const function on one line.
+- Fix cursorPosition character is non-negative.
+
 ## 0.0.4
 
 - Fix object scope detection.

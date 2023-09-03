@@ -2,7 +2,7 @@
   "name": "vscode-quick-console",
   "displayName": "Quick Console",
   "description": "Quick generate console.log for variables with selection or not anywhere",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Efrice",
   "publisher": "Efrice",
   "license": "MIT",

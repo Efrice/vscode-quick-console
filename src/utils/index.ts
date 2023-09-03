@@ -9,7 +9,7 @@ export function isFunction(lineText: string): boolean {
 }
 
 export function isObject(lineText: string): boolean {
-  return lineText.replace(/\s/g, '').includes('={') || (!isVariable(lineText) && lineText.includes(':'))
+  return lineText.replace(/\s/g, '').includes('={') || (!isVariable(lineText) && lineText.includes(':') && !isFunction(lineText))
 }
 
 export function getLineText(document: vs.TextDocument, line: number, clearSpace = false): string {

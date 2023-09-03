@@ -1,10 +1,12 @@
 import * as vs from 'vscode'
-import { getLineText, isFunction, isObject } from "../../utils"
+import { getLineText, isFunction, isObject, isVariable } from "../../utils"
 
 export function getInsertLine(document: vs.TextDocument, line: number): number{
   const lineText = getLineText(document, line)
   let insertLine = line
-  if(isFunction(lineText)){
+  if(isVariable(lineText)){
+    return insertLine + 1
+  }else if(isFunction(lineText)){
     insertLine = getLineOfFunctionOpenBrace(document, line)
   }else if(isObject(lineText)){
     insertLine = getLineOfObjectCloseBrace(document, line)
