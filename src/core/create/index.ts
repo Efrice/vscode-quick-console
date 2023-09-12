@@ -1,8 +1,8 @@
-import * as vs from 'vscode'
-import { isObject, getLineText } from '../../utils'
-import { resolveSelection } from './resolveSelection'
-import { resolveDefault } from './resolveDefault'
-import { getInsertLine } from './getInsertLine'
+import * as vs from "vscode"
+import { isObject, getLineText } from "../../utils"
+import { resolveSelection } from "./resolveSelection"
+import { resolveDefault } from "./resolveDefault"
+import { getInsertLine } from "./getInsertLine"
 
 export interface LogInfo {
   logs: string
@@ -14,13 +14,17 @@ export interface LogInfo {
 }
 
 let init = false
-export function create(editor: vs.TextEditor){
+export function create(editor: vs.TextEditor) {
   const { logs, insertLine, cursorPosition } = getLogInfo(editor)
 
-  if(logs){
-    editor.edit((editBuilder) => editBuilder.insert(new vs.Position(insertLine, 0), logs)).then(() => {
-      setCursorPosition(editor, cursorPosition)
-    })
+  if (logs) {
+    editor
+      .edit((editBuilder) =>
+        editBuilder.insert(new vs.Position(insertLine, 0), logs)
+      )
+      .then(() => {
+        setCursorPosition(editor, cursorPosition)
+      })
     if (!init) {
       setCursorPosition(editor, cursorPosition)
       init = true
@@ -34,28 +38,32 @@ function getLogInfo(editor: vs.TextEditor): LogInfo {
   const { logs, cursorPosition } = getLogsAndCursor(editor)
   const insertLine = getInsertLine(editor.document, line)
 
-  if(isObject(getLineText(editor.document, line))){
+  if (isObject(getLineText(editor.document, line))) {
     cursorPosition.line = insertLine
   }
 
   return {
     logs,
     insertLine,
-    cursorPosition
+    cursorPosition,
   }
 }
 
-function getLogsAndCursor(editor: vs.TextEditor): Omit<LogInfo, 'insertLine'> {
+function getLogsAndCursor(editor: vs.TextEditor): Omit<LogInfo, "insertLine"> {
   const selectedText = editor.document.getText(editor.selection)
-  const { logs, cursorPosition } = selectedText.length > 0 ? resolveSelection(editor) : resolveDefault(editor)
+  const { logs, cursorPosition } =
+    selectedText.length > 0 ? resolveSelection(editor) : resolveDefault(editor)
 
-  return { 
+  return {
     logs,
-    cursorPosition
+    cursorPosition,
   }
 }
 
-function setCursorPosition( editor: vs.TextEditor, cursorPosition: { line: number; character: number }): vs.Selection{
+function setCursorPosition(
+  editor: vs.TextEditor,
+  cursorPosition: { line: number; character: number }
+): vs.Selection {
   const { line, character } = cursorPosition
   const position = new vs.Position(line, character)
 

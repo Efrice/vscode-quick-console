@@ -1,24 +1,28 @@
-import * as vs from 'vscode'
+import * as vs from "vscode"
 import { getLineText, isFunction, isObject, isVariable } from "../../utils"
 
-export function getInsertLine(document: vs.TextDocument, line: number): number{
+export function getInsertLine(document: vs.TextDocument, line: number): number {
   const lineText = getLineText(document, line)
   let insertLine = line
-  if(isVariable(lineText)){
-    return insertLine + 1
-  }else if(isFunction(lineText)){
+  if (isFunction(lineText)) {
     insertLine = getLineOfFunctionOpenBrace(document, line)
-  }else if(isObject(lineText)){
+  } else if (isObject(lineText)) {
     insertLine = getLineOfObjectCloseBrace(document, line)
   }
 
   return insertLine + 1
 }
 
-function getLineOfFunctionOpenBrace(document: vs.TextDocument, line: number): number {
+function getLineOfFunctionOpenBrace(
+  document: vs.TextDocument,
+  line: number
+): number {
   let openLine = line
-  let lineText = getLineText(document, openLine)
-  while (!lineText.includes('{')) {
+  let lineText = getLineText(document, openLine).replace(/\s/g, "")
+  if (lineText.includes("=>") && !lineText.includes("=>{")) {
+    return line
+  }
+  while (!lineText.includes("{")) {
     openLine++
     lineText = getLineText(document, openLine)
   }
@@ -26,11 +30,14 @@ function getLineOfFunctionOpenBrace(document: vs.TextDocument, line: number): nu
 }
 
 let objectOpenBraceStack: number[] = []
-export function getLineOfObjcetOpenBrace(document: vs.TextDocument, line: number): number {
+export function getLineOfObjcetOpenBrace(
+  document: vs.TextDocument,
+  line: number
+): number {
   let openLine = line
   let lineText = getLineText(document, openLine, true)
-  while (!lineText.includes('={')) {
-    if(lineText.includes('{')){
+  while (!lineText.includes("={")) {
+    if (lineText.includes("{")) {
       objectOpenBraceStack.push(openLine)
     }
     openLine--
@@ -40,20 +47,23 @@ export function getLineOfObjcetOpenBrace(document: vs.TextDocument, line: number
   return openLine
 }
 
-function getLineOfObjectCloseBrace(document: vs.TextDocument, line: number): number {
+function getLineOfObjectCloseBrace(
+  document: vs.TextDocument,
+  line: number
+): number {
   let closeLine = line
   let lineText = getLineText(document, closeLine)
 
-  if(lineText.includes('}')){
+  if (lineText.includes("}")) {
     objectOpenBraceStack.pop()
   }
   while (objectOpenBraceStack.length > 0) {
     closeLine++
     lineText = getLineText(document, closeLine)
-    if(lineText.includes('{')){
+    if (lineText.includes("{")) {
       objectOpenBraceStack.push(line)
     }
-    if(lineText.includes('}')){
+    if (lineText.includes("}")) {
       objectOpenBraceStack.pop()
     }
   }

@@ -1,8 +1,11 @@
 # Change Log
 
+## 0.0.6
+
+- Fix const arrow function on one line.
+
 ## 0.0.5
 
-- Fix const function on one line.
 - Fix cursorPosition character is non-negative.
 
 ## 0.0.4

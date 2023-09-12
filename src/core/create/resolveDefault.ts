@@ -42,6 +42,7 @@ function getWord(lineText: string, character: number): string {
     "function",
     "class",
     "typeof",
+    "import",
     "export",
   ]
   const words = lineText.split("")
