@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.7
+
+- Fix deconstruct assignment like const { a: b, c } = d().
+
 ## 0.0.6
 
 - Fix const arrow function on one line.
