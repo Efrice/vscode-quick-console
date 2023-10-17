@@ -12,33 +12,46 @@ Quick generate console.log for variables with selection or not anywhere.
 
 ## Features
 
-| origin || generate |
-|:---:|:---:|:---:|
-| ![](./public/origin.png) | => | ![](./public/generate.png) |
+|          origin          |     |          generate          |
+| :----------------------: | :-: | :------------------------: |
+| ![](./public/origin.png) | =>  | ![](./public/generate.png) |
 
-- 🧂  It's can be use anywhere.
+- 🧂 It's can be use anywhere.
 - 🍭 Single variable without selection.
 - 🌭 Multiple params of function with selection.
 - 🌭 Multiple continuous variables like deconstruct assignment with selection.
 - 🍖 Clear console.logs in the active file.
+- 🛠 Improve the development experience with console variables in object.
 
 ## Usage
 
-Without Selection 
-  - Move the cursor near variable.
-  - Press `Cmd + Shift + L` (Mac) or `Ctrl + Shift + L` (Windows).
-  - Next line will be:<br /> 
-    console.log('variable:', variable)
+Without Selection
 
-With Selection 
-  - Selected continuous variables or params of function.
-  - Press `Cmd + Shift + L` (Mac) or `Ctrl + Shift + L` (Windows).
-  - Next line will be: <br />
-    console.log('variable1:', variable1)<br />
-    console.log('variable2:', variable2)
+- Move the cursor near variable.
+- Press `Cmd + Shift + L` (Mac) or `Ctrl + Shift + L` (Windows).
+- Next line will be:<br />
+  console.log('variable:', variable)
+
+With Selection
+
+- Selected continuous variables or params of function.
+- Press `Cmd + Shift + L` (Mac) or `Ctrl + Shift + L` (Windows).
+- Next line will be: <br />
+  console.log('variable1:', variable1)<br />
+  console.log('variable2:', variable2)
 
 Clear console.logs
-  - Press `Cmd + Shift + K` (Mac) or `Ctrl + Shift + K` (Windows).
+
+- Press `Cmd + Shift + K` (Mac) or `Ctrl + Shift + K` (Windows).
+
+## Options
+
+### consoleInObject
+
+- Type: `Boolean`
+- Default: `false`
+
+Console log variables in object.
 
 ## Vim keyBindings Setting
 
@@ -67,6 +80,7 @@ Clear console.logs
   }
 ]
 ```
+
 ✨ Happy hacking!
 
 ## License

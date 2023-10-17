@@ -30,7 +30,7 @@ function getLineOfFunctionOpenBrace(
 }
 
 let objectOpenBraceStack: number[] = []
-export function getLineOfObjcetOpenBrace(
+export function getLineOfObjectOpenBrace(
   document: vs.TextDocument,
   line: number
 ): number {

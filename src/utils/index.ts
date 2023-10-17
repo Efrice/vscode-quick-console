@@ -48,3 +48,7 @@ export function getStartSpace(lineText: string): string {
 export function generateLog(log: string, space: string): string {
   return `${space}console.log('${log}:', ${log})\n`
 }
+
+export function generateLogInObject(log: string[], space: string): string {
+  return `${space}console.log('${log.join(", ")}:', { ${log.join(", ")} })\n`
+}
