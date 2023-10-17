@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.8
+
+- Feature options console log variables in object.
+
 ## 0.0.7
 
 - Fix deconstruct assignment like const { a: b, c } = d().

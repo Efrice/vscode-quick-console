@@ -1,19 +1,29 @@
 import * as vs from "vscode"
 import { LogInfo } from "."
 import { createLogInfo } from "../helper"
-import { getLineText, getStartSpace, generateLog, isObject } from "../../utils"
-import { getLineOfObjcetOpenBrace } from "./getInsertLine"
+import {
+  getLineText,
+  getStartSpace,
+  generateLog,
+  generateLogInObject,
+  isObject,
+} from "../../utils"
+import { getLineOfObjectOpenBrace } from "./getInsertLine"
 
-export function resolveDefault(editor: vs.TextEditor) {
+export function resolveDefault(
+  editor: vs.TextEditor,
+  consoleInObject: boolean | undefined
+) {
   const logInfo = createLogInfo()
-  getLogsAndCursor(editor, logInfo)
+  getLogsAndCursor(editor, logInfo, consoleInObject)
 
   return logInfo
 }
 
 function getLogsAndCursor(
   editor: vs.TextEditor,
-  logInfo: LogInfo & { push: (log: string) => void }
+  logInfo: LogInfo & { push: (log: string) => void },
+  consoleInObject: boolean | undefined
 ): void {
   const document = editor.document
   const { line, character } = editor.selection.active
@@ -24,14 +34,18 @@ function getLogsAndCursor(
     ? getLineTextOfObject(document, line)
     : lineText
 
-  push(generateLog(word, getStartSpace(text)))
+  push(
+    consoleInObject
+      ? generateLogInObject([word], getStartSpace(text))
+      : generateLog(word, getStartSpace(text))
+  )
 
   cursorPosition.line = line + 1
   cursorPosition.character = logInfo.logs.length - 1
 }
 
 function getLineTextOfObject(document: vs.TextDocument, line: number) {
-  return getLineText(document, getLineOfObjcetOpenBrace(document, line))
+  return getLineText(document, getLineOfObjectOpenBrace(document, line))
 }
 
 function getWord(lineText: string, character: number): string {
