@@ -1,8 +1,12 @@
 # Change Log
 
+## 0.0.9
+
+- Feature option console log variables name.
+
 ## 0.0.8
 
-- Feature options console log variables in object.
+- Feature option console log variables in an object.
 
 ## 0.0.7
 

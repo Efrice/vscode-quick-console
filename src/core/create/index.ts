@@ -13,9 +13,18 @@ export interface LogInfo {
   }
 }
 
-const consoleInObject: boolean | undefined = vs.workspace
-  .getConfiguration("quickConsole")
-  .get("format.consoleInObject")
+export interface Options {
+  consoleInObject: boolean
+  consoleVariablesName: boolean
+}
+
+const configuration = vs.workspace.getConfiguration("quickConsole")
+const consoleInObject: boolean | undefined = configuration.get("format.consoleInObject")
+const consoleVariablesName: boolean | undefined = configuration.get("format.consoleVariablesName")
+const options: Options = {
+  consoleInObject: !!consoleInObject,
+  consoleVariablesName: !!consoleVariablesName
+}
 
 let init = false
 export function create(editor: vs.TextEditor) {
@@ -57,8 +66,8 @@ function getLogsAndCursor(editor: vs.TextEditor): Omit<LogInfo, "insertLine"> {
   const selectedText = editor.document.getText(editor.selection)
   const { logs, cursorPosition } =
     selectedText.length > 0
-      ? resolveSelection(editor, consoleInObject)
-      : resolveDefault(editor, consoleInObject)
+      ? resolveSelection(editor, options)
+      : resolveDefault(editor, options)
 
   return {
     logs,

@@ -1,5 +1,5 @@
 import * as vs from "vscode"
-import { LogInfo } from "."
+import { LogInfo, Options } from "."
 import { createLogInfo } from "../helper"
 import {
   getLineText,
@@ -10,12 +10,10 @@ import {
 } from "../../utils"
 import { getLineOfObjectOpenBrace } from "./getInsertLine"
 
-export function resolveDefault(
-  editor: vs.TextEditor,
-  consoleInObject: boolean | undefined
-) {
+
+export function resolveDefault(editor: vs.TextEditor, options: Options) {
   const logInfo = createLogInfo()
-  getLogsAndCursor(editor, logInfo, consoleInObject)
+  getLogsAndCursor(editor, logInfo, options)
 
   return logInfo
 }
@@ -23,21 +21,22 @@ export function resolveDefault(
 function getLogsAndCursor(
   editor: vs.TextEditor,
   logInfo: LogInfo & { push: (log: string) => void },
-  consoleInObject: boolean | undefined
+  options: Options
 ): void {
   const document = editor.document
   const { line, character } = editor.selection.active
   const lineText = getLineText(document, line)
   const word = getWord(lineText, character)
   const { cursorPosition, push } = logInfo
+  const { consoleInObject, consoleVariablesName } = options
   const text = isObject(lineText)
     ? getLineTextOfObject(document, line)
     : lineText
 
   push(
     consoleInObject
-      ? generateLogInObject([word], getStartSpace(text))
-      : generateLog(word, getStartSpace(text))
+      ? generateLogInObject([word], getStartSpace(text), !!consoleVariablesName)
+      : generateLog(word, getStartSpace(text), !!consoleVariablesName)
   )
 
   cursorPosition.line = line + 1

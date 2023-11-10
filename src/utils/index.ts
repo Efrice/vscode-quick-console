@@ -45,10 +45,10 @@ export function getStartSpace(lineText: string): string {
   return " ".repeat(spaceNumber) + "\t".repeat(tabNumber)
 }
 
-export function generateLog(log: string, space: string): string {
-  return `${space}console.log('${log}:', ${log})\n`
+export function generateLog(log: string, space: string, consoleVariablesName: boolean): string {
+  return consoleVariablesName ? `${space}console.log('${log}:', ${log})\n` : `${space}console.log(${log})\n`
 }
 
-export function generateLogInObject(log: string[], space: string): string {
-  return `${space}console.log('${log.join(", ")}:', { ${log.join(", ")} })\n`
+export function generateLogInObject(log: string[], space: string, consoleVariablesName: boolean): string {
+  return consoleVariablesName ? `${space}console.log('${log.join(", ")}:', { ${log.join(", ")} })\n` : `${space}console.log({ ${log.join(", ")} })\n`
 }

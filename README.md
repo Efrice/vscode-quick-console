@@ -16,18 +16,18 @@ Quick generate console.log for variables with selection or not anywhere.
 | :----------------------: | :-: | :------------------------: |
 | ![](./public/origin.png) | =>  | ![](./public/generate.png) |
 
-- 🧂 It's can be use anywhere.
+- 🧂 It can be used anywhere.
 - 🍭 Single variable without selection.
 - 🌭 Multiple params of function with selection.
 - 🌭 Multiple continuous variables like deconstruct assignment with selection.
-- 🍖 Clear console.logs in the active file.
-- 🛠 Improve the development experience with console variables in object.
+- 🍖 Clear console.log in the active file.
+- 🛠 Improve the development experience with console variables in an object.
 
 ## Usage
 
 Without Selection
 
-- Move the cursor near variable.
+- Move the cursor near in variable.
 - Press `Cmd + Shift + L` (Mac) or `Ctrl + Shift + L` (Windows).
 - Next line will be:<br />
   console.log('variable:', variable)
@@ -51,7 +51,14 @@ Clear console.logs
 - Type: `Boolean`
 - Default: `false`
 
-Console log variables in object.
+Console log variables in an object.
+
+### consoleVariablesName
+
+- Type: `Boolean`
+- Default: `true`
+
+Console log variables name.
 
 ## Vim keyBindings Setting
 
