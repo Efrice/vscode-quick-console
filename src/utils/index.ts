@@ -49,6 +49,13 @@ export function generateLog(log: string, space: string, consoleVariablesName: bo
   return consoleVariablesName ? `${space}console.log('${log}:', ${log})\n` : `${space}console.log(${log})\n`
 }
 
-export function generateLogInObject(log: string[], space: string, consoleVariablesName: boolean): string {
-  return consoleVariablesName ? `${space}console.log('${log.join(", ")}:', { ${log.join(", ")} })\n` : `${space}console.log({ ${log.join(", ")} })\n`
+export function generateLogInObject(logs: string[], space: string, consoleVariablesName: boolean): string {
+  logs = logs.map(log => {
+    if(log.includes('.')){
+      const properties = log.split('.')
+      return `${properties[properties.length - 1]}: ${log} `
+    }
+    return log
+  })
+  return consoleVariablesName ? `${space}console.log('${logs.join(", ")}:', { ${logs.join(", ")} })\n` : `${space}console.log({ ${logs.join(", ")} })\n`
 }

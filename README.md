@@ -22,6 +22,7 @@ Quick generate console.log for variables with selection or not anywhere.
 - 🌭 Multiple continuous variables like deconstruct assignment with selection.
 - 🍖 Clear console.log in the active file.
 - 🛠 Improve the development experience with console variables in an object.
+- 🛠 Option for console log variables name.
 
 ## Usage
 

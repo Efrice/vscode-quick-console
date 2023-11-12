@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.10
+
+- Fix console like obj.a in an object.
+
 ## 0.0.9
 
 - Feature option console log variables name.
