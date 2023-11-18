@@ -20,7 +20,8 @@ Quick generate console.log for variables with selection or not anywhere.
 - 🍭 Single variable without selection.
 - 🌭 Multiple params of function with selection.
 - 🌭 Multiple continuous variables like deconstruct assignment with selection.
-- 🍖 Clear console.log in the active file.
+- 🍖 Clear all console.log in the active file.
+- 🍖 Toggle all console.log's state of comment in the active file.
 - 🛠 Improve the development experience with console variables in an object.
 - 🛠 Option for console log variables name.
 
@@ -75,6 +76,10 @@ Console log variables name.
   {
     "before": ["<leader>", "k"],
     "commands": ["quickConsole.clearConsoleLog"]
+  },
+  {
+    "before": ["<leader>", "k"],
+    "commands": ["quickConsole.commentConsoleLog"]
   }
 ],
 "vim.normalModeKeyBindingsNonRecursive": [
@@ -85,6 +90,10 @@ Console log variables name.
   {
     "before": ["<leader>", "k"],
     "commands": ["quickConsole.clearConsoleLog"]
+  },
+  {
+    "before": ["<leader>", "k"],
+    "commands": ["quickConsole.commentConsoleLog"]
   }
 ]
 ```

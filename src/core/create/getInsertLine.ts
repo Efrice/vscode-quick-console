@@ -1,5 +1,5 @@
 import * as vs from "vscode"
-import { getLineText, isFunction, isObject, isVariable } from "../../utils"
+import { getLineText, isFunction, isObject } from "../../utils"
 
 export function getInsertLine(document: vs.TextDocument, line: number): number {
   const lineText = getLineText(document, line)

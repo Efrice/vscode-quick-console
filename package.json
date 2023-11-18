@@ -2,7 +2,7 @@
   "name": "vscode-quick-console",
   "displayName": "Quick Console",
   "description": "Quick generate console.log for variables with selection or not anywhere",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": "Efrice",
   "publisher": "Efrice",
   "license": "MIT",
@@ -27,7 +27,11 @@
       },
       {
         "command": "quickConsole.clearConsoleLog",
-        "title": "clear console.log"
+        "title": "clear all console.log"
+      },
+      {
+        "command": "quickConsole.toggleConsoleLog",
+        "title": "toggle all console.log's state of comment"
       }
     ],
     "keybindings": [
@@ -40,6 +44,11 @@
         "command": "quickConsole.clearConsoleLog",
         "key": "ctrl+shift+k",
         "mac": "cmd+shift+k"
+      },
+      {
+        "command": "quickConsole.toggleConsoleLog",
+        "key": "ctrl+shift+j",
+        "mac": "cmd+shift+j"
       }
     ],
     "configuration": {

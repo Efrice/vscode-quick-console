@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.11
+
+- Feature toggle console.log's state of comment in the active file.
+
 ## 0.0.10
 
 - Fix console like obj.a in an object.
