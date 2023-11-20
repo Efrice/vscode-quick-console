@@ -1,7 +1,7 @@
-import * as vs from 'vscode'
-import { getLineText } from '../../utils'
+import * as vs from "vscode"
+import { getLineText, isStartWithConsole } from "../../utils"
 
-export function clear(editor: vs.TextEditor){
+export function clear(editor: vs.TextEditor) {
   const logsLines = getLogsLines(editor)
 
   clearUp(logsLines, editor)
@@ -10,7 +10,7 @@ export function clear(editor: vs.TextEditor){
 function clearUp(logsLines: number[][], editor: vs.TextEditor) {
   if (logsLines.length > 0) {
     editor.edit((editBuilder) => {
-      logsLines.forEach(item => {
+      logsLines.forEach((item) => {
         const selection = new vs.Selection(
           new vs.Position(item[0], 0),
           new vs.Position(item[item.length - 1] + 1, 0)
@@ -27,7 +27,7 @@ function getLogsLines(editor: vs.TextEditor): number[][] {
   const logsLines: number[][] = []
   let cell: number[] = []
   for (let i = 0; i < totalLines; i++) {
-    if (isStartWithConsole(document, i)) {
+    if (isStartWithConsole(getLineText(document, i))) {
       if (isNextLineConsole(cell, i)) {
         cell.push(i)
       } else {
@@ -45,8 +45,4 @@ function getLogsLines(editor: vs.TextEditor): number[][] {
 
 function isNextLineConsole(cell: number[], line: number) {
   return cell.length > 0 && line === cell[cell.length - 1] + 1
-}
-
-function isStartWithConsole(document: vs.TextDocument, line: number) {
-  return getLineText(document, line).trim().startsWith('console.log(')
 }

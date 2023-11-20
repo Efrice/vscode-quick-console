@@ -1,5 +1,10 @@
 import * as vs from "vscode"
-import { getLineText, getStartSpace } from "../../utils"
+import {
+  getLineText,
+  getStartSpace,
+  isStartWithCommentConsole,
+  isStartWithConsole,
+} from "../../utils"
 
 interface LogLine {
   i: number
@@ -60,12 +65,4 @@ function getLogsLines(editor: vs.TextEditor): {
     }
   }
   return { logsLines, commentLogsLines }
-}
-
-function isStartWithConsole(line: string) {
-  return line.trim().startsWith("console.log(")
-}
-
-function isStartWithCommentConsole(line: string) {
-  return line.trim().replace(/\s/g, "").startsWith("//console.log(")
 }

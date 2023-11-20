@@ -45,17 +45,37 @@ export function getStartSpace(lineText: string): string {
   return " ".repeat(spaceNumber) + "\t".repeat(tabNumber)
 }
 
-export function generateLog(log: string, space: string, consoleVariablesName: boolean): string {
-  return consoleVariablesName ? `${space}console.log('${log}:', ${log})\n` : `${space}console.log(${log})\n`
+export function generateLog(
+  log: string,
+  space: string,
+  consoleVariablesName: boolean
+): string {
+  return consoleVariablesName
+    ? `${space}console.log('${log}:', ${log})\n`
+    : `${space}console.log(${log})\n`
 }
 
-export function generateLogInObject(logs: string[], space: string, consoleVariablesName: boolean): string {
-  logs = logs.map(log => {
-    if(log.includes('.')){
-      const properties = log.split('.')
+export function generateLogInObject(
+  logs: string[],
+  space: string,
+  consoleVariablesName: boolean
+): string {
+  logs = logs.map((log) => {
+    if (log.includes(".")) {
+      const properties = log.split(".")
       return `${properties[properties.length - 1]}: ${log} `
     }
     return log
   })
-  return consoleVariablesName ? `${space}console.log('${logs.join(", ")}:', { ${logs.join(", ")} })\n` : `${space}console.log({ ${logs.join(", ")} })\n`
+  return consoleVariablesName
+    ? `${space}console.log('${logs.join(", ")}:', { ${logs.join(", ")} })\n`
+    : `${space}console.log({ ${logs.join(", ")} })\n`
+}
+
+export function isStartWithConsole(line: string) {
+  return line.trim().startsWith("console.log(")
+}
+
+export function isStartWithCommentConsole(line: string) {
+  return line.trim().replace(/\s/g, "").startsWith("//console.log(")
 }
