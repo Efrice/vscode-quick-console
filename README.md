@@ -42,9 +42,13 @@ With Selection
   console.log('variable1:', variable1)<br />
   console.log('variable2:', variable2)
 
-Clear console.logs
+Clear all console.log
 
 - Press `Cmd + Shift + K` (Mac) or `Ctrl + Shift + K` (Windows).
+
+Toggle all console.log's state of comment
+
+- Press `Cmd + Shift + J` (Mac) or `Ctrl + Shift + J` (Windows).
 
 ## Options
 
@@ -80,6 +84,10 @@ Console log variables name.
   {
     "before": ["<leader>", "k"],
     "commands": ["quickConsole.commentConsoleLog"]
+  },
+  {
+    "before": ["<leader>", "j"],
+    "commands": ["quickConsole.toggleConsoleLog"]
   }
 ],
 "vim.normalModeKeyBindingsNonRecursive": [
@@ -94,6 +102,10 @@ Console log variables name.
   {
     "before": ["<leader>", "k"],
     "commands": ["quickConsole.commentConsoleLog"]
+  },
+  {
+    "before": ["<leader>", "j"],
+    "commands": ["quickConsole.toggleConsoleLog"]
   }
 ]
 ```
