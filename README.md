@@ -7,7 +7,7 @@ Quick Console
 </h1>
 
 <p align="center">
-Quick generate console.log for variables with selection or not anywhere.
+Quick operation for console.log variables anywhere.
 </p>
 
 ## Features
@@ -16,37 +16,37 @@ Quick generate console.log for variables with selection or not anywhere.
 | :----------------------: | :-: | :------------------------: |
 | ![](./public/origin.png) | =>  | ![](./public/generate.png) |
 
-- 🧂 It can be used anywhere.
-- 🍭 Single variable without selection.
-- 🌭 Multiple params of function with selection.
-- 🌭 Multiple continuous variables like deconstruct assignment with selection.
-- 🍖 Clear all console.log in the active file.
-- 🍖 Toggle all console.log's state of comment in the active file.
-- 🛠 Improve the development experience with console variables in an object.
+- ✨ It can be used anywhere.
+- 🍭 Quick generate console.log, single variable without Selection.
+- 🌭 Multiple continuous variables like deconstruct assignment、params of function with selection.
+- 🎉 Quick clear all console.log in the active file.
+- 🍖 Quick toggle all console.log's state of comment in the active file.
+- 🛠 Option for console variables in an object.
 - 🛠 Option for console log variables name.
 
 ## Usage
 
-Without Selection
+### Quick generate console.log
+
+#### Single variable without Selection
 
 - Move the cursor near in variable.
 - Press `Cmd + Shift + L` (Mac) or `Ctrl + Shift + L` (Windows).
 - Next line will be:<br />
-  console.log('variable:', variable)
+  console.log({ variable })
 
-With Selection
+#### Multiple continuous variables with Selection
 
 - Selected continuous variables or params of function.
 - Press `Cmd + Shift + L` (Mac) or `Ctrl + Shift + L` (Windows).
 - Next line will be: <br />
-  console.log('variable1:', variable1)<br />
-  console.log('variable2:', variable2)
+  console.log({ variable1, variable2 })<br />
 
-Clear all console.log
+### Quick clear all console.log
 
 - Press `Cmd + Shift + K` (Mac) or `Ctrl + Shift + K` (Windows).
 
-Toggle all console.log's state of comment
+### Quick toggle all console.log's state of comment
 
 - Press `Cmd + Shift + J` (Mac) or `Ctrl + Shift + J` (Windows).
 
@@ -55,14 +55,14 @@ Toggle all console.log's state of comment
 ### consoleInObject
 
 - Type: `Boolean`
-- Default: `false`
+- Default: `true`
 
 Console log variables in an object.
 
 ### consoleVariablesName
 
 - Type: `Boolean`
-- Default: `true`
+- Default: `false`
 
 Console log variables name.
 
@@ -82,10 +82,6 @@ Console log variables name.
     "commands": ["quickConsole.clearConsoleLog"]
   },
   {
-    "before": ["<leader>", "k"],
-    "commands": ["quickConsole.commentConsoleLog"]
-  },
-  {
     "before": ["<leader>", "j"],
     "commands": ["quickConsole.toggleConsoleLog"]
   }
@@ -98,10 +94,6 @@ Console log variables name.
   {
     "before": ["<leader>", "k"],
     "commands": ["quickConsole.clearConsoleLog"]
-  },
-  {
-    "before": ["<leader>", "k"],
-    "commands": ["quickConsole.commentConsoleLog"]
   },
   {
     "before": ["<leader>", "j"],

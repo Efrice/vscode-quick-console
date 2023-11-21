@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.12
+
+- Docs update and change the default value of options.
+
 ## 0.0.11
 
 - Feature toggle console.log's state of comment in the active file.
