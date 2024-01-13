@@ -29,20 +29,50 @@ function getLogsLines(editor: vs.TextEditor): number[][] {
   for (let i = 0; i < totalLines; i++) {
     if (isStartWithConsole(getLineText(document, i))) {
       if (isNextLineConsole(cell, i)) {
-        cell.push(i)
+        getWholeConsole(cell, i, document)
       } else {
         cell.length > 0 && logsLines.push(cell)
         cell = []
-        cell.push(i)
+        getWholeConsole(cell, i, document)
       }
     }
   }
   if (cell.length > 0) {
     logsLines.push(cell)
   }
+  console.log({ push: logsLines })
   return logsLines
 }
 
 function isNextLineConsole(cell: number[], line: number) {
   return cell.length > 0 && line === cell[cell.length - 1] + 1
+}
+
+function getWholeConsole(
+  cell: number[],
+  line: number,
+  document: vs.TextDocument
+) {
+  const roundBracketsStack = []
+  const lineText = getLineText(document, line)
+  for (let i = 0; i < lineText.length; i++) {
+    if (lineText[i] === "(") {
+      roundBracketsStack.push(i)
+    } else if (lineText[i] === ")") {
+      roundBracketsStack.pop()
+    }
+  }
+  cell.push(line)
+  while (roundBracketsStack.length > 0) {
+    line++
+    const lineText = getLineText(document, line)
+    for (let i = 0; i < lineText.length; i++) {
+      if (lineText[i] === "(") {
+        roundBracketsStack.push(i)
+      } else if (lineText[i] === ")") {
+        roundBracketsStack.pop()
+      }
+    }
+    cell.push(line)
+  }
 }

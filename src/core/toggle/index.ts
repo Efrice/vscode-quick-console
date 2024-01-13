@@ -57,12 +57,47 @@ function getLogsLines(editor: vs.TextEditor): {
   for (let i = 0; i < totalLines; i++) {
     const line = getLineText(document, i)
     if (isStartWithConsole(line)) {
-      const start = getStartSpace(line).length
-      logsLines.push({ i, start })
+      getWholeConsole(logsLines, i, document)
     } else if (isStartWithCommentConsole(line)) {
-      const start = getStartSpace(line).length
-      commentLogsLines.push({ i, start })
+      getWholeConsole(commentLogsLines, i, document)
     }
   }
   return { logsLines, commentLogsLines }
+}
+
+function getWholeConsole(
+  lines: LogLine[],
+  line: number,
+  document: vs.TextDocument
+) {
+  const roundBracketsStack = []
+  const lineText = getLineText(document, line)
+  for (let i = 0; i < lineText.length; i++) {
+    if (lineText[i] === "(") {
+      roundBracketsStack.push(i)
+    } else if (lineText[i] === ")") {
+      roundBracketsStack.pop()
+    }
+  }
+  const start = getStartSpace(lineText).length
+  lines.push({
+    i: line,
+    start,
+  })
+  while (roundBracketsStack.length > 0) {
+    line++
+    const lineText = getLineText(document, line)
+    for (let i = 0; i < lineText.length; i++) {
+      if (lineText[i] === "(") {
+        roundBracketsStack.push(i)
+      } else if (lineText[i] === ")") {
+        roundBracketsStack.pop()
+      }
+    }
+    const start = getStartSpace(lineText).length
+    lines.push({
+      i: line,
+      start,
+    })
+  }
 }
