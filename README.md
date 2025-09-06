@@ -30,9 +30,9 @@ Quick operation for console.log variables anywhere.
 
 #### Single variable without Selection
 
-- Move the cursor near in variable.
+- Move the cursor near in variable or word.
 - Press `Cmd + Shift + L` (Mac) or `Ctrl + Shift + L` (Windows).
-- Next line will be:<br />
+- Next line or current line will be:<br />
   console.log({ variable })
 
 #### Multiple continuous variables with Selection
