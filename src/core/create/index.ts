@@ -7,6 +7,7 @@ import { getInsertLine } from "./getInsertLine"
 export interface LogInfo {
   logs: string
   insertLine: number
+  isReplaceLine: boolean
   cursorPosition: {
     line: number
     character: number
@@ -28,13 +29,18 @@ const options: Options = {
 
 let init = false
 export function create(editor: vs.TextEditor) {
-  const { logs, insertLine, cursorPosition } = getLogInfo(editor)
+  const { logs, insertLine, isReplaceLine, cursorPosition } = getLogInfo(editor)
 
   if (logs) {
     editor
-      .edit((editBuilder) =>
-        editBuilder.insert(new vs.Position(insertLine, 0), logs)
-      )
+      .edit((editBuilder) => {
+        if (isReplaceLine) {
+          editBuilder.delete(new vs.Selection(new vs.Position(insertLine - 1, 0), new vs.Position(insertLine - 1, logs.length)))
+          editBuilder.insert(new vs.Position(insertLine - 1, 0), logs)
+        } else {
+          editBuilder.insert(new vs.Position(insertLine, 0), logs)
+        }
+      })
       .then(() => {
         setCursorPosition(editor, cursorPosition)
       })
@@ -48,7 +54,7 @@ export function create(editor: vs.TextEditor) {
 function getLogInfo(editor: vs.TextEditor): LogInfo {
   const { line } = editor.selection.active
 
-  const { logs, cursorPosition } = getLogsAndCursor(editor)
+  const { logs, isReplaceLine, cursorPosition } = getLogsAndCursor(editor)
   const insertLine = getInsertLine(editor.document, line)
 
   if (isObject(getLineText(editor.document, line))) {
@@ -58,19 +64,21 @@ function getLogInfo(editor: vs.TextEditor): LogInfo {
   return {
     logs,
     insertLine,
+    isReplaceLine,
     cursorPosition,
   }
 }
 
 function getLogsAndCursor(editor: vs.TextEditor): Omit<LogInfo, "insertLine"> {
   const selectedText = editor.document.getText(editor.selection)
-  const { logs, cursorPosition } =
+  const { logs, isReplaceLine, cursorPosition } =
     selectedText.length > 0
       ? resolveSelection(editor, options)
       : resolveDefault(editor, options)
 
   return {
     logs,
+    isReplaceLine,
     cursorPosition,
   }
 }

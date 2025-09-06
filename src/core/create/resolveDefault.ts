@@ -39,8 +39,15 @@ function getLogsAndCursor(
       : generateLog(word, getStartSpace(text), !!consoleVariablesName)
   )
 
-  cursorPosition.line = line + 1
-  cursorPosition.character = logInfo.logs.length - 1
+  if (lineText.endsWith(word)) {
+    logInfo.isReplaceLine = true
+    logInfo.logs = logInfo.logs.replace(/\n$/, '')
+    cursorPosition.line = line
+    cursorPosition.character = logInfo.logs.length - 1
+  } else {
+    cursorPosition.line = line + 1
+    cursorPosition.character = logInfo.logs.length - 1
+  }
 }
 
 function getLineTextOfObject(document: vs.TextDocument, line: number) {
